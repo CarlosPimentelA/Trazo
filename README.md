@@ -6,8 +6,8 @@ Sistema de trazabilidad logística para la gestión de viajes, conductores, cami
 
 ## Tecnologías
 
-- **Java 21**
-- **Spring Boot 3**
+- **Java 17**
+- **Spring Boot 4**
 - **Spring Security 7** con OAuth2 Resource Server
 - **JWT**
 - **PostgreSQL**
