@@ -3,6 +3,7 @@ package com.trucks_logistics.Trucks.Logistics.travels;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,6 +19,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/travels")
+@PreAuthorize("hasAnyRole('ADMIN', 'DISPATCHER')")
 @AllArgsConstructor
 public class TravelController {
     private final TravelService travelService;
@@ -45,12 +47,14 @@ public class TravelController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         travelService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/driver/{driverId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER', 'DISPATCHER')")
     public ResponseEntity<List<TravelResponse>> findByDriver(@PathVariable Long driverId) {
         return ResponseEntity.ok(travelService.findByDriver(driverId));
     }
@@ -61,24 +65,28 @@ public class TravelController {
     }
 
     @PatchMapping("/status/{travelId}/complete")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     public ResponseEntity<String> updateCompleteStatus(@PathVariable Long travelId) {
         travelService.completeTravelStatus(travelId);
         return ResponseEntity.ok("Actualizado perfectamente!");
     }
 
     @PatchMapping("/status/{travelId}/pending")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     public ResponseEntity<String> updatePendingStatus(@PathVariable Long travelId) {
         travelService.pendingTravelStatus(travelId);
         return ResponseEntity.ok("Actualizado perfectamente");
     }
 
     @PatchMapping("/status/{travelId}/loading")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     public ResponseEntity<String> updateLoadingStatus(@PathVariable Long travelId) {
         travelService.loadingTravelStatus(travelId);
         return ResponseEntity.ok("Actualizado perfectamente");
     }
 
     @PatchMapping("/status/{travelId}/start")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
     public ResponseEntity<String> updateStartStatus(@PathVariable Long travelId) {
         travelService.startTravelStatus(travelId);
         return ResponseEntity.ok("Actualizado perfectamente");
@@ -97,6 +105,8 @@ public class TravelController {
     }
 
     @PatchMapping("/status/{travelId}/unloading")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DRIVER')")
+
     public ResponseEntity<String> updateUnloadingStatus(@PathVariable Long travelId) {
         travelService.unloadingTravelStatus(travelId);
         return ResponseEntity.ok("Actualizado perfectamente");

@@ -64,6 +64,16 @@ public class SecurityConfig {
                                             "message": "Debes iniciar sesión para acceder a este recurso"
                                         }
                                     """);
+                        }).accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            response.setContentType("application/json");
+                            response.getWriter().write("""
+                                        {
+                                            "status": 403,
+                                            "error": "Forbidden",
+                                            "message": "No tienes permisos para acceder a este recurso"
+                                        }
+                                    """);
                         }));
 
         return http.build();

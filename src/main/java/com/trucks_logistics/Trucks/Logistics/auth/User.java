@@ -56,7 +56,6 @@ public class User {
 
     @PrePersist
     protected void onCreate() {
-        this.role = UserRole.ROLE_CLIENT;
         this.userStatus = UserStatus.PENDIENTE;
         this.createdAt = LocalDateTime.now();
     }

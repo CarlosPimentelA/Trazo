@@ -2,6 +2,8 @@ package com.trucks_logistics.Trucks.Logistics.auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,9 +65,10 @@ public class AuthController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/revoke")
-    public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest request) {
-        refreshTokenService.revoke(request.refreshToken());
+    @DeleteMapping("/revoke-all")
+    public ResponseEntity<String> logoutAll(@Valid @RequestBody RefreshTokenRequest request,
+            @AuthenticationPrincipal Jwt jwt) {
+        refreshTokenService.revoke(request.refreshToken(), jwt.getSubject());
         return ResponseEntity.ok("Token revocados con exito");
     }
 }

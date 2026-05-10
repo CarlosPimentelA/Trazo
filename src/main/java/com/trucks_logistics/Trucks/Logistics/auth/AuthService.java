@@ -52,6 +52,7 @@ public class AuthService implements IAuthService {
         user.setEmail(request.email());
         user.setPassword(hashedPassword);
         user.setUsername(request.username());
+        user.setRole(request.role());
         // Guardar user en DB
         authRepository.save(user);
 
