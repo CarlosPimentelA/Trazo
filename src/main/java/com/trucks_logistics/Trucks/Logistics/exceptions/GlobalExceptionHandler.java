@@ -52,9 +52,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponse> handleTypeMismatch(
-            org.springframework.web.method.annotation.MethodArgumentTypeMismatchException ex) {
-        String mensaje = String.format("El valor '%s' no es válido para el campo '%s'.", ex.getValue(), ex.getName());
-        ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), mensaje, System.currentTimeMillis());
+            MethodArgumentTypeMismatchException ex) {
+        String mensaje = String.format("El valor '%s' no es válido para el campo'%s'.", ex.getValue(), ex.getName());
+        ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+                mensaje, System.currentTimeMillis());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 

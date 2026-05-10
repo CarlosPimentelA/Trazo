@@ -8,5 +8,5 @@ public interface IRefreshToken {
 
     AuthTokenResponse refreshToken(String token);
 
-    void revoke(String token);
+    void revoke(String token, String email);
 }
