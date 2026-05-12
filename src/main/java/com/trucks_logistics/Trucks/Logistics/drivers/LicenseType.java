@@ -1,6 +1,6 @@
 package com.trucks_logistics.Trucks.Logistics.drivers;
 
-enum LicenseType {
+public enum LicenseType {
     CATEGORIA_1,
     CATEGORIA_2,
     CATEGORIA_3,

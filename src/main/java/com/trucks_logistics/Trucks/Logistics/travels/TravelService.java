@@ -70,7 +70,8 @@ public class TravelService implements ITravelService {
                 // MVP rule: estado controlado por backend
                 travel.setTravelStatus(TravelStatus.PENDIENTE);
 
-                validateCapacity(travel.getId());
+                // no se utiliza de momento
+                validateCapacity(travel);
 
                 Travel saved = travelRepository.save(travel);
 
@@ -83,6 +84,9 @@ public class TravelService implements ITravelService {
                                 travelData.truck(),
                                 travelData.route());
         }
+
+        // TODO: Crear metodo para agregar cargas a un viaje, con validacion de
+        // capacidad
 
         @Override
         public TravelResponse update(Long id, TravelUpdateRequest request) {
@@ -103,7 +107,7 @@ public class TravelService implements ITravelService {
                 travel.setRoute(route);
                 travel.setArriveDate(request.getArrivalDate());
 
-                validateCapacity(travel.getId());
+                validateCapacity(travel);
 
                 Travel updated = travelRepository.save(travel);
 
@@ -210,11 +214,10 @@ public class TravelService implements ITravelService {
                                 .collect(Collectors.summingDouble(Load::getLoadWeight));
         }
 
-        private void validateCapacity(Long id) {
-                TravelDataBundle travelData = getEntities(id);
-                int maxCapacity = travelData.truck().getTruckType().getCapacityMax();
+        private void validateCapacity(Travel travel) {
+                int maxCapacity = travel.getTruck().getTruckType().getCapacityMax();
 
-                double currentWeight = sumTravelLoadWeight(travelData.loads());
+                double currentWeight = sumTravelLoadWeight(travel.getLoads());
 
                 if (currentWeight > maxCapacity) {
                         throw new OverCapacityException("Truck capacity (" + maxCapacity + ") "

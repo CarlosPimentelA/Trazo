@@ -1,6 +1,6 @@
 package com.trucks_logistics.Trucks.Logistics.travels;
 
-enum TravelStatus {
+public enum TravelStatus {
     PENDIENTE,
     CARGANDO,
     EN_RUTA,

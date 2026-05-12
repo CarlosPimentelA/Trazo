@@ -1,6 +1,6 @@
 package com.trucks_logistics.Trucks.Logistics.drivers;
 
-enum DriverDisponibility {
+public enum DriverDisponibility {
     DISPONIBLE,
     OCUPADO
 }
