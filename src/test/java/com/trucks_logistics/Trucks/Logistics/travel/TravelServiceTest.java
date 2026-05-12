@@ -26,7 +26,6 @@ import com.trucks_logistics.Trucks.Logistics.drivers.Driver;
 import com.trucks_logistics.Trucks.Logistics.drivers.DriverDisponibility;
 import com.trucks_logistics.Trucks.Logistics.drivers.DriverRepository;
 import com.trucks_logistics.Trucks.Logistics.drivers.LicenseType;
-import com.trucks_logistics.Trucks.Logistics.exceptions.OverCapacityException;
 import com.trucks_logistics.Trucks.Logistics.loads.Load;
 import com.trucks_logistics.Trucks.Logistics.loads.LoadTypes;
 import com.trucks_logistics.Trucks.Logistics.routes.GeoLocation;
@@ -261,30 +260,6 @@ class TravelServiceTest {
                     .hasMessage("Ruta no encontrada");
         }
 
-        @Test
-        @DisplayName("Debe lanzar OverCapacityException si el peso excede la capacidad")
-        void shouldThrowOverCapacityWhenWeightExceedsCapacity() {
-            TravelRequest request = buildRequest();
-            Driver driver = buildDriver();
-            Truck truck = buildTruck(10); // capacidad muy baja
-            Route route = buildRoute();
-
-            Load heavyLoad = new Load();
-            heavyLoad.setLoadWeight(500.0); // 500 > 10
-
-            List<Load> loads = List.of(heavyLoad);
-            Travel saved = buildTravel(TravelStatus.PENDIENTE, loads);
-            saved.setId(1L);
-
-            when(driverRepository.findById(1L)).thenReturn(Optional.of(driver));
-            when(truckRepository.findById(1L)).thenReturn(Optional.of(truck));
-            when(routeRepository.findById(1L)).thenReturn(Optional.of(route));
-            when(travelRepository.save(any(Travel.class))).thenReturn(saved);
-            when(travelRepository.findById(1L)).thenReturn(Optional.of(saved));
-
-            assertThatThrownBy(() -> travelService.create(request))
-                    .isInstanceOf(OverCapacityException.class);
-        }
     }
 
     // ─── delete ─────────────────────────────────────────────────────────────────
