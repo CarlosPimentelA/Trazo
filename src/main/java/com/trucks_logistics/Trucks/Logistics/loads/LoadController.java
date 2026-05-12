@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -25,21 +26,25 @@ public class LoadController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'DISPATCHER')")
     public ResponseEntity<LoadResponse> createLoad(@Valid @RequestBody LoadRequest request) {
         return new ResponseEntity<>(loadService.createLoad(request), HttpStatus.CREATED);
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'DISPATCHER')")
     public ResponseEntity<List<LoadResponse>> getAllLoads() {
         return ResponseEntity.ok(loadService.getAllLoads());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DISPATCHER')")
     public ResponseEntity<LoadResponse> getLoadById(@PathVariable Long id) {
         return ResponseEntity.ok(loadService.getLoadById(id));
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DISPATCHER')")
     public ResponseEntity<LoadResponse> updateLoad(
             @PathVariable Long id,
             @Valid @RequestBody LoadUpdateRequest request) {
@@ -47,6 +52,7 @@ public class LoadController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteLoad(@PathVariable Long id) {
         loadService.deleteLoad(id);
         return ResponseEntity.noContent().build();
